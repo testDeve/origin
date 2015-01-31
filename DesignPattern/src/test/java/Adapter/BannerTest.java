@@ -1,6 +1,5 @@
 package Adapter;
 
-import AbstractFactory.Main;
 import junit.framework.TestCase;
 
 public class BannerTest extends TestCase{
