@@ -6,6 +6,9 @@ git ls-files
 ファイル削除
 git rm ファイル名
 
+フォルダ削除
+git rm -r フォルダ名
+
 初期化
 git init
 
@@ -16,7 +19,7 @@ git add ファイル名
 git commit -m ‘コメント'
 
 ステージングのキャンセル
-git rm —cached ファイル
+git rm --cached ファイル
 
 リモートリポジトリプッシュ
 git push -u origin origin
@@ -24,6 +27,45 @@ git push -u origin origin
 リモート削除
 git push --delete origin master
 
+リモートリポジトリを追加する
+git　remote　add　[reponame]　[url]
+
+リモートリポジトリの一覧
+git remote
+
+フェッチする
+git　fetch　[reponame]
+
+pushする
+git　push　[reponame]　[branchname]:[branch]
+
+pullする
+git　pull　[reponame]　[branch]
+
+ブランチを削除
+git　branch　-d　[branchname]
+
+リモートリポジトリを削除
+git　remote　rm　[reponame]
+
+ブランチの一覧を見る
+git　branch　-a
+
+ブランチを作成
+git　branch　<新しいbranch名>
+
+ブランチを切り替える
+git checkout <切り替えたいbranch名>
+
+索引に追加
+git　add　<ファイル名>
+
+変更したファイルをもとに戻したい 
+git　checkout　<戻したいファイル名>
+git　checkout　.(ピリオド)
+
+コミットログを見る 
+git　log　-5
 
 git remote add origin https://github.com/testDeve/origin.git
 git clone https://github.com/testDeve/origin.git
