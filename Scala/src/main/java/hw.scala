@@ -1,5 +1,7 @@
 package main.java
 
 object Hi {
-  def main(args:Array[String])=println("Hi"); 
+  def printHello(){
+    println("Hello World")
+  } 
 }
