@@ -1,0 +1,134 @@
+1．まずは"git config"から
+ ユーザ情報の設定
+
+超当たり前ですが、絶対しなきゃですね。
+
+    ユーザ名
+    $ git config --global user.name "名前" 　
+    メールアドレス
+    $ git config --global user.email "メールアドレス"
+
+ すこし便利な設定　
+
+    コマンドライン上でgitの出力に色を付ける
+    $ git config --global color.ui true
+    　
+    Gitのコマンドを打ち間違えても、いい感じに処理を続行してくれる設定
+    $ git config --global help.autocorrect 1
+    　
+    これで、$ git statsなどと打ち間違えても、
+    $ git statusだなって予測して処理を続行してくれます！
+    　
+    テキストエディターを標準のVi/Vimからemacsに変更
+    （これはemacsユーザ向けです）
+    $ git config --global core.editor emacs
+
+ git configでの設定を確認
+
+    特定の設定を表示
+    $ git config user.name
+    $ git config color.ui
+    　
+    設定一覧を表示
+    $ git config -l
+    または、
+    $ git config --list
+
+    参考ページ：1.5 使い始める - 最初のGitの構成
+    参考ページ：gitで打ち間違えた時にも自動で正しいコマンドを予測し実行する
+
+2．.gitignoreで管理対象外にする
+
+ローカル特有の設定や、本番やテストで設定が変わるファイルなどがあると思います。
+
+たとえば、
+
+$ git status
+# On branch master
+# Changed but not updated:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#   modified:   envfile
+#   modified:   database.yml
+#   modified:   log/log_20150101.tsv
+#   modified:   log/log_20150102.tsv
+no changes added to commit (use "git add" and/or "git commit -a")
+
+こんな状況。
+envfileやdatabase.ymlはローカルの設定、logディレクトリ以下は毎日のログを貯めるなどです。
+
+これらのファイルをaddやcommitしないようにするのって面倒ですよね…。
+ .gitignoreに記述
+
+ということで、.gitignoreに記述しましょう！
+$ vi .gitignore
+などで.gitignoreファイルを開き、
+
+envfile
+database.yml
+log/
+
+と追加しちゃいましょう！
+たったこれだけで管理対象外になります！
+
+ディレクトリの場合はディレクトリ名の後ろに/を入れるだけでOKです！
+また、同じ名前や拡張子の場合は、
+hogehoge.*や*.txtなどで対象外にできます。
+
+※ただし、一度gitで管理してしまったファイルは反映されないので気をつけてください。
+
+    参考ページ：.gitignoreの存在を我々は見過ごしてはならない。
+
+3．logが文字化け…を解決
+
+$ git log
+などでlogを見ようとすると文字化けしてて日本語が読めない…
+
+なんて悲しい状況の時は
+$ sudo localedef -f UTF-8 -i ja_JP ja_JP
+これで日本語になります！
+
+    参考ページ：git logで文字化けした時の対処法
+
+4．logのtreeをコマンドで表示
+
+簡単なlogなら
+$ git log
+もう少しtreeっぽくすると
+$ git log --graph
+で確認できるのですが、treeではないんですよね。
+
+なので、私はcommitやpush、pull、fetchで差分の確認などが、ササッとコマンドで見れるようにtreeの設定をしています。
+ treeをaliasに設定
+
+ということで、aliasに設定しましょう！
+aliasを設定する時は、.git/configファイルで設定します。
+$ vi .git/config
+などでファイルを開くと
+
+[core]
+  hogehoge...
+   :
+[remote "origin"]
+  fugafuga...
+   :
+[branch "master"]
+  hamuhamu...
+   :
+
+のような記述がされていると思います。
+ここに、aliasを追加します
+
+[alias]
+graph = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --all --date=short
+
+これで、
+$ git graph
+コマンドをたたくと
+ずらーーーっと立てにtreeが表示されます！
+
+Enterキーでどんどん過去が表示されていき、
+qと入力すると表示が止まり、コマンドラインに戻ります。
+
+※treeを表示と良いつつ"graph"にしたのは、mktreeというコマンドがあるため、treeだと予測も相まってややこしくなるためです。
