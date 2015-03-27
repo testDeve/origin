@@ -1,7 +1,3 @@
-<html>
-<head>
-<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-<script type="text/javascript">
 var data = [{"division":"営業部","person":[{"name":'山田',"age":21},{"name":'佐藤',"age":56},{"name":'鈴木',"age":33}]},{"division":"製造部","person":[{"name":'阿部',"age":44},{"name":'藤沢',"age":19},{"name":'渡辺',"age":26}]}];
 
 function json(){
@@ -12,11 +8,3 @@ function json(){
         }
     }
 }
-
-</script>
-</head>
-<body>
-<input type="button" value="クリック" Onclick="javascript:json()">
-<ul id="output"></ul>
-</body>
-</html>
