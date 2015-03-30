@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<title>プログレスバー</title>
+</head>
+<body>
+Loading : <progress id="prog" max="100" value="0">Loading...</progress>
+ : <output id="outp">0</output>％<br>
+<input type="button" value="リロードして確認" onClick="location.reload(); return false;">
+<script>
+  var pbar = document.getElementById('prog');
+  var ptxt = document.getElementById('outp');
+  var pup = setInterval("upPrgrss()",100);
+  function upPrgrss(){
+    if(pbar.value<=pbar.max){
+    pbar.value++;       /*「++」で 1 ずつ足してます*/
+    ptxt.value = pbar.value;
+    }else{
+    clearInterval(pup);
+    }
+}
+</script>
+</body>
+</html>
