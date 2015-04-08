@@ -1,0 +1,18 @@
+パスワード忘れ(system権限でログイン)
+sqlplus / as sysdba
+
+CREATE USER ユーザー名 IDENTIFIED BY パスワード
+[DEFAULT    TABLESPACE デフォルト表領域名 ]
+[TEMPORARY  TABLESPACE 一時表領域名       ]
+[QUOTA   サイズ ON 表領域名 ]
+[PROFILE プロファイル名     ];
+
+ALTER USER ユーザー名
+[IDENTIFIED BY パスワード]
+[DEFAULT    TABLESPACE デフォルト表領域名 ]
+[TEMPORARY  TABLESPACE 一時表領域名 ]
+[QUOTA サイズ ON 表領域名 ];
+
+
+データコピーしてテーブル作成
+create table table_name as select * from table_name2 where xxx=xxx
