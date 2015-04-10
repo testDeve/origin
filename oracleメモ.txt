@@ -16,3 +16,66 @@ ALTER USER ユーザー名
 
 データコピーしてテーブル作成
 create table table_name as select * from table_name2 where xxx=xxx
+
+a.表領域（テーブルスペース）作成
+
+SQL> CREATE TABLESPACE  表領域名 DATAFILE 'ファイル名（フルパス）' SIZE ファイルサイズ;
+SQL> CREATE TABLESPACE  DATA1 LOGGING DATAFILE '/data/data01.dbf' SIZE 100M;
+
+表領域への書き込み権限付与
+ALTER USER [USER]  QUOTA [SIZE] ON [TABLE_SPACE] 
+
+表領域移動
+ALTER TABLE [TABLE_NAME] MOVE TABLESPACE [TABLE_SPACE]
+
+索引作成
+CREATE INDEX [INDEX_NAME] ON TABLE_NAME(COLUMN_NAME);
+
+テーブルに貼られているインデックスを確認。
+SELECT * FROM user_ind_columns where table_name = UPPER('&table_name') order by index_name, column_position ASC;
+
+制約の有効化無効化
+ALTER TABLE テーブル名 [ENABLE/DISABLE] CONSTRAINT 制約名;
+
+Data Pump による export/import を行う場合、ディレクトリ・オブジェクトの作成と権限の付与が必要。
+
+DIRECTORY の作成には、CREATE ANY DIRECTORY 権限 が必要。
+
+DIRECTORY OBJECT の作成そのディレクトリへのアクセス権限の付与
+TEST_DIR というディレクトリを /home/test として作成し、SCOTTユーザが EXPDP/IMPDP を行います。
+ディレクトリの作成と read/write 権限の付与を行います。
+
+SQL> create or replace directory TEST_DIR as '/home/test';
+SQL> grant read, write on directory TEST_DIR to develop;
+
+・権限の付与
+ CONNECTおよびRESOURCE ロールが必要です。
+
+expdp develop/develop directory="EXP_DIR" CONTENT=data_only
+impdp develop/develop directory=IMP_DIR dumpfile=EXPDAT.DMP
+
+( CONTENT=data_only ) 	表のデータのみ
+( CONTENT=metadata_only ) 	表の定義のみ
+( CONTENT=all（デフォルト） ) 	表のデータと定義の両方
+
+制約無効
+ALTER TABLE テーブル名　DISABLE CONSTRAINT 制約名
+
+制約有効
+ALTER TABLE テーブル名　ENABLE CONSTRAINT 制約名
+
+コメント追加
+COMMENT ON TABLE テーブル名 IS 'コメント';
+COMMENT ON COLUMN テーブル名．カラム名 IS 'コメント';
+
+SELECT COMMENTS FROM USER_TAB_COMMENTS
+WHERE TABLE_NAME = 'テーブル名';
+
+
+if文
+select id ,
+case id
+when '1' then 'OK'
+else 'NG'
+end 列名
+from emp;
