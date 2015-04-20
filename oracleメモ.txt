@@ -71,6 +71,13 @@ COMMENT ON COLUMN テーブル名．カラム名 IS 'コメント';
 SELECT COMMENTS FROM USER_TAB_COMMENTS
 WHERE TABLE_NAME = 'テーブル名';
 
+ダイレクト・パス・インサートによる高速のインサート処理にはトレードオフがあるが脅威的な速さを誇る。
+数百万件オーダのデータの投入するのに数分とかからない(レコードサイズ、スペックに左右はされる)
+通常のパスのローディングに比べて 数分の1 程度の時間で投入できる。
+NOLOGGING 状態の場合 REDO ログが出力されない。（高速にはなる一方でフルバックアップするまで間はそのデータをアーカイブログから復旧できない）
+
+ALTER TABLE my_table LOGGING
+ALTER TABLE my_table NOLOGGING
 
 if文
 select id ,
