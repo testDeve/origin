@@ -1,0 +1,23 @@
+LINUXへのOracleインストール
+
+ポートが開放されていないためクライアントからDBサーバーへの接続が失敗した。
+TSNリスナーがありませんが発生
+
+nc -z [ホスト名] 20-30
+
+で判明、1521ポートに接続できないことを確認。
+
+以下のコマンドでサーバー側のポートを開放
+firewall-cmd --add-port=1521/tcp --zone=public --permanent
+firewall-cmd --reload
+
+その他勉強になった事
+
+.bash_profileにパス追加 Windowsでの環境変数設定
+source .bash_profileで読み込み
+.bashrcでも同様
+
+tnsnames.oraの読み込みパスを環境変数で指定できる。
+TNS_ADMINで指定
+
+TNS_ADMINが存在しない場合は、ORACLE_HOME/network/adminを読み込みに行く。
