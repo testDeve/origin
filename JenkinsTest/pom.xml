@@ -7,10 +7,6 @@
   <version>1.0</version>
   <name>wave225</name>
   
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-  
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
