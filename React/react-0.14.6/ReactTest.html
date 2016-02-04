@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React!</title>
+    <script src="build/react.js"></script>
+    <script src="build/react-dom.js"></script>
+    <script src="build/browser.min.js"></script>
+  </head>
+  <body>
+    <script type="text/babel">
+    
+      var CommentBox = React.createClass({
+          render: function() {
+              return (
+                  <div className="commentBox">
+                      IDとパスワードを入力してください。
+                  </div>
+              );
+          }
+      });
+      
+      var LoginForm = React.createClass({
+          getInitialState: function() {
+              return {
+                  userId: this.props.userId,
+                  passWord: this.props.password
+              };
+          },
+          changeUserId(e) {
+              this.setState({userId:e.target.value});
+          },
+          chagePassWord(e) {
+              this.setState({passWord:e.target.value});
+          },
+          onClick(e) {
+              if( this.state.userId == ''){
+                  alert("IDを入力してください。");
+              }
+              
+              if( this.state.passWord == ''){
+                  alert("パスワードを入力してください。");
+              }
+              
+              if( this.state.userId == 'guest' && this.state.passWord == 'guest'){
+                  alert("ログイン成功");
+              }else{
+                  alert("ログイン失敗");
+              }
+          },
+          render: function() {
+              return (
+                  <div>
+                      <table>
+                          <tr>
+                              <td><label>ID</label></td>
+                              <td><input type="text" value={this.state.userId} onChange={this.changeUserId}/></td>
+                          </tr>
+                          <tr>
+                              <td><label>パスワード </label></td>
+                              <td><input type="text" value={this.state.passWord} onChange={this.chagePassWord}/></td>
+                          </tr>
+                      </table>
+                      <br/>
+                      <input type="button" onClick={this.onClick} value="ログイン" />
+                      
+                  </div>
+              );
+          }
+      });
+      
+      ReactDOM.render(
+          <div>
+              <h1>ログイン画面（サンプル）</h1>
+              <CommentBox/>
+          </div>,document.getElementById('example')
+      );
+      
+      ReactDOM.render(<LoginForm userId="guest" password="guest"/>,document.getElementById('login'));
+      
+    </script>
+    
+    <div id="example"></div>
+    <br/>
+    <div id="login"></div>
+  </body>
+</html>
