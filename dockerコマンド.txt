@@ -1,0 +1,55 @@
+1. イメージのダウンロード
+docker pull イメージ名[：タグ名]
+
+2. イメージの一覧表示
+docker images
+
+3. イメージの詳細情報
+docker inspect コンテナ識別子またはイメージ識別子
+
+4. DockerHubのイメージ検索
+docker search
+
+5.イメージ削除
+docker rmi イメージ名
+
+6.DockerHubへのログイン
+docker login
+
+7.DockerHubへのpush
+docker push イメージ名[:タグ名]
+<Docker Hubのユーザー名>/<イメージ名[:タグ名]>
+
+8.DockerHubのログアウト
+docker logout
+
+9.コンテナ生成
+docker create
+
+10.コンテナ生成/起動
+docker run
+docker run -it ―name “test” centos /bin/bash
+CPU時間の相対割合とメモリの使用量を指定
+docker run ―-cpu-shares=512 ―memory=512m centos
+
+11.コンテナ起動
+docker start
+
+12.コンテナ停止
+docker stop
+
+13.コンテナ削除
+docker rm
+
+14.稼働コンテナの一覧
+docker ps
+
+15.コンテナの稼働状況
+docker stats [コンテナ識別子]
+
+16.稼働コンテナへの接続
+docker attach 
+
+17.稼働コンテナでプロセス実行
+docker exec [コンテナ識別子]
+
