@@ -53,3 +53,6 @@ docker attach
 17.稼働コンテナでプロセス実行
 docker exec [コンテナ識別子]
 
+18.コンテナイメージ化
+docker commit [コミット対象][コミット後]
+
