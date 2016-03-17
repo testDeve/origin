@@ -1,0 +1,45 @@
+
+２．トレースログから実行計画を確認する
+
+sysユーザで以下のクエリを実行して、トレースログファイルの出力先を確認しておきます。
+
+SHOW PARAMETER USER_DUMP_DEST
+
+    NAME TYPE
+    ------------------------------------ ----------------------
+    VALUE
+    ------------------------------
+    user_dump_dest string
+    c:\app\administrator\diag\rdbm
+    s\orcl\orcl\trace
+
+以下のコマンドでトレースログレベルを変更します。
+
+ALTER SYSTEM SET SQL_TRACE = TRUE;
+ALTER SYSTEM SET EVENTS '10046 trace name context forever, level 4';
+
+この方法は、SQLを手入力する必要はありません。アプリケーションから任意のSQLを実行後、トレースログを確認します。
+トレースログのフォルダには関係のないトレースログも大量に出力されるので、SQLの一部（たとえばテーブル名）などでgrepするとすぐに見つけることができると思います。
+f:id:replication:20140517133934p:plain
+３．DBMS_XPLAN.DISPLAY_CURSOR()を使う
+
+アプリケーションからSQLを実行します。続いて、sysユーザで以下のクエリを実行し、実行されたSQLのSQLIDを取得します。likeの部分はSQLの一部なので対象のテーブル名などを指定します。
+
+select sql_id, sql_text from v$sql where sql_text like '%table01%';
+
+実行した結果が以下です。3afnfzvgvgs3uがSQLIDになります。
+
+    SQL_ID
+    --------------------------
+    SQL_TEXT
+    --------------------------------------
+
+    3afnfzvgvgs3u
+    select name from table01 where id=:b0
+
+SQLIDが判明したら、DBMS_XPLAN.DISPLAY_CURSORの引数にSQLIDを指定して、以下のクエリを実行すると、実行計画が確認できます。
+
+set serveroutput off
+SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY_CURSOR('3afnfzvgvgs3u'));
+
+この方法であれば、事前にプランテーブルの作成やトレースログレベルの変更などをしなくても実行計画が確認できるので、便利ですね。
