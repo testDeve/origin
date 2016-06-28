@@ -1,0 +1,18 @@
+$(document).ready(function(){
+        $("#start").click(function(){
+            timer1 = setInterval(function(){
+                imgSrc = $("#timerChange img").attr("src");
+                nowIndex = parseInt(imgSrc.substring(imgSrc.indexOf("_")+1,imgSrc.indexOf(".")));
+                nextIndex = nowIndex + 1;
+                if(nextIndex > 4){
+                    $("#timerChange img").attr("src",$("#timerChange img").attr('src').replace(nowIndex,"1"));
+                }else{
+                    $("#timerChange img").attr("src",$("#timerChange img").attr('src').replace(nowIndex,nextIndex));
+                }
+            },50);
+        });
+        
+        $("#stop").click(function(){
+            clearInterval(timer1);
+        });
+    });

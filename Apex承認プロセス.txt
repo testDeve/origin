@@ -1,0 +1,6 @@
+UketsukeJyouhouHeader__c[] ujh = [SELECT Id FROM UketsukeJyouhouHeader__c WHERE UketsukeBangou__c = '00192363'];
+Approval.ProcessWorkitemRequest  request = new Approval.ProcessWorkitemRequest ();
+ProcessInstanceWorkitem pIWorkitemList = [SELECT Id FROM ProcessInstanceWorkitem WHERE ProcessInstance.TargetObjectId =: ujh[0].id]; 
+request.setWorkitemId(pIWorkitemList.id);
+request.setAction('Removed');
+Approval.ProcessResult result =  Approval.process(request);

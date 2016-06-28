@@ -1,0 +1,115 @@
+■DOMについて
+■特定のノードを取得
+■ダイレクトアクセス
+■ノードウォーキング
+DOMについて
+
+DOM(Document Object Model)とは？
+HTMLやXMLといったマークアップ言語で書かれたドキュメントを操作するための標準的な仕組み
+DOMを利用することで、Webページの文章に対して容易に操作をすることが出来ます。
+今回は、その中でも基本的な【特定のノードを取得する】ということについてまとめてみました。
+
+■ノードとは？
+DOMでは、文章に含まれる要素、属性、そしてテキストをそれぞれオブジェクトと考え、
+【オブジェクトが集合したものが文章】
+と考えます。
+そして、そのオブジェクトこそ、ノードと呼ばれるものであり、
+それぞれ、要素ノード/属性ノード/テキストノードと呼びます。
+特定のノードを取得する
+
+文章に対して、何か操作をしたい場合、まず必要なのがその操作をしたい文章を取得することです。
+特定のノードを取得する方法は、大きく分けて２つ
+■ダイレクトアクセス(特定のノードを直接取得)
+■ノードウォーキング(ある起点から相対的な位置関係で取得)
+があります。
+ダイレクトアクセス
+
+ダイレクトアクセスは、その名の通り直接目的とするノードを取得するため、わかりやすいです。
+・ID値
+・タグ名
+・class属性
+の３つをキーとしてノードを取得する方法を見ていきます。
+
+■ID値から取得する
+一番シンプルな方法です。
+ID値からノードを取得するには、getElementByIdメソッドを使います。
+getElementById.html
+
+<script type="text/javascript">
+<!-- 
+//ID値に"name"を持つ要素ノードを取得
+var name = document.getElementById('name');
+//-->
+</script>
+<!-- --中略-- -->
+<div id="name">太郎</div>
+
+■タグ名から取得する
+タグ名からノードを取得したい場合は、getElementsByTagNameメソッドを使う
+getElementsByTagName.html
+
+<script type="text/javascript">
+<!-- 
+//ページ内のアンカータグを取得
+var list = document.getElementByTagName('a');
+//-->
+</script>
+<!-- --中略-- -->
+<a href="http://www.a~~~~~~~~/">1つめ</a><br />
+<a href="http://www.b~~~~~~~~/">2つめ</a><br />
+<a href="http://www.c~~~~~~~~/">3つめ</a>
+
+ここで、getElementsByTagNameメソッドの戻り値は、NodeListオブジェクトになるということを覚えておかなければいけません。
+このオブジェクトで扱うことができるメンバは、以下の２つです。
+・lenght:リストに含まれる要素数(今回は'3')
+・item(i):i番目のノード(今回list.item(0)は、"1つめ")
+
+■class属性から取得する
+class属性からノードを取得したい場合は、getElementsByClassNameメソッドを使う
+getElementsByClassName.html
+
+<script type="text/javascript">
+<!-- 
+//「class="class"」の要素を取得
+var list = document.getElementByClassName('class');
+//-->
+</script>
+<!-- --中略-- -->
+<a href="http://www.a~~~~~~~~/" class="class">1つめ</a><br />
+<a href="http://www.b~~~~~~~~/" class="class">2つめ</a><br />
+<a href="http://www.c~~~~~~~~/" class="class">3つめ</a>
+
+こちらも戻り値は同じくNodeListオブジェクトです。
+ノードウォーキング
+
+以上まで、特定の要素に対して、直接取得する方法であるダイレクトアクセスでした。
+今回のノードウォーキングは、あるノードを起点に相対的位置関係からノードを取得する方法です。
+
+代表的な関係の表し方は、以下
+・parentNode(親ノード)
+・previousSibling（兄ノード）
+・nextSibling(弟ノード)
+・firstChild(最初の子ノード)
+・lastChild(最後の子ノード)
+今回は子ノード(最初)を例にしてみます。
+firstChild.html
+
+<script type="text/javascript">
+<!-- 
+//ID値に"url"を持つ要素ノードを取得
+var name = document.getElementById('url');
+//最初の子ノードを取得
+var first = name.firstChild;
+//-->
+</script>
+<!-- --中略-- -->
+<div id="url">
+  <a href="http://www.a~~~~~~~~/" class="class">1つめ</a><br />
+  <a href="http://www.b~~~~~~~~/" class="class">2つめ</a><br />
+  <a href="http://www.c~~~~~~~~/" class="class">3つめ</a>
+</div>
+
+以上のような使い方です。
+JavaScriptを勉強し始めて、DOMってなんだか難しいなと感じていましたが、
+ノードを取得することは、まとめてみるとどれもほぼ同じ要領でできることが分かりました。
+意外と簡単にできるので、ぜひやってみてください。

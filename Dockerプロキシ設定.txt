@@ -1,0 +1,13 @@
+docker.serviceをコピー
+
+# cp /usr/lib/systemd/system/docker.service /etc/systemd/system/
+
+コピーしたdocker.serviceのExecStartコマンドの直前にProxyの設定を追加
+docker.service
+
+Environment="HTTP_PROXY=http://user:pwd@proxy.example.com:8080"
+
+設定を再読込 & Docker再起動
+
+# systemctl daemon-reload
+# systemctl restart docker
