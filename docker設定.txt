@@ -1,0 +1,38 @@
+
+⚫️　docker-composeインストール
+curl -L https://github.com/docker/compose/releases/download/1.6.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
+⚫️　権限を渡すオプション
+--privileged
+
+
+⚫️　docker-compose.yml
+
+postgresql:
+  image: sameersbn/postgresql:9.4
+  volumes:
+    - /home/10001/postgresql/data:/var/lib/postgresql
+  environment:
+    - DB_USER=redmine
+    - DB_PASS=admin123
+    - DB_NAME=redmin
+memcached:
+  image: sameersbn/memcached:latest
+redmine10001:
+  image: sameersbn/redmine:2.6.3
+  links:
+    - postgresql:postgresql
+    - memcached:memcached
+  volumes:
+    - /var/run/docker.sock:/run/docker.sock
+    - /usr/bin/docker:/bin/docker
+    - /home/10001/redmine/data:/home/redmine/data
+  environment:
+    - DB_USER=redmine
+    - DB_PASS=admin123
+    - DB_NAME=redmine
+    - SMTP_HOST=smtp_server_fqdn
+    - SMTP_PORT=25
+  ports:
+    - "10001:80"
