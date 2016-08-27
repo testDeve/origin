@@ -1,0 +1,48 @@
+Itamaeメモ
+
+・フォルダ作成
+directory "create itamae-test dir" do
+  action :create、delete、nothing
+  cwd "/root/foo" #カレントディレクトリ
+  path "/root/itamae-test" #パス
+  mode "755"   #権限
+  owner "wang" #所有者
+  group "root" #グループ
+end
+
+・コマンド実行
+execute "get erlang repo" do
+  cwd "/root/Download" #ディレクトリ移動
+  command "wget http://packages.erlang-solutions.com/erlang-solutions-1.0-1.noarch.rpm" #コマンド実行
+end
+
+・ファイル作成
+file "create file foo" do
+  action [:create, :delete, :edit]
+  path "/root/foo"
+  cwd "/root/foo" #カレントディレクトリ
+  content "this is just a random file"
+  mode "755"
+  group "root"
+end
+
+・Gitクローン作成
+git "clone elixir" do
+  destination "/root/elixir"
+  repository "https://github.com/elixir-lang/elixir.git"
+  revision "HEAD"
+end
+
+・リモートサーバーにファイルを転送
+remote_file "/etc/sudoers.d/wzj" do
+    source "remote_files/wzj"
+end
+
+・パッケージインストール
+package "git" do
+  action :install、remove
+end
+
+service 'nginx' do
+  action [:enable, :start, :stop]
+end
