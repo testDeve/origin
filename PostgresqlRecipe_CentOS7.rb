@@ -14,7 +14,7 @@ end
 end
 
 execute "initdb" do
-  command "PGSETUP_INITDB_OPTIONS='--encoding UTF8 --no-locale' /usr/pgsql-9.5/bin/postgresql95-etup initdb"
+  command "PGSETUP_INITDB_OPTIONS='--encoding UTF8 --no-locale' /usr/pgsql-9.5/bin/postgresql95-setup initdb"
   not_if "test -e /var/lib/pgsql/9.5/data/postgresql.conf"
 end
 
