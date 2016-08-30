@@ -30,7 +30,7 @@ eval "$(rbenv init -)"
 ここまでの作業で rbenv の導入が完了しました。再ログインするとか、シェルを再起動するなりして最後の環境設定までが反映された状態にしてください。
 
 更に、この後の作業で必要になるモジュールを（エラーが出る前に）yum でインストールしておきます：
-# yum install gcc make openssl-devel libffi-devel
+# yum install gcc make openssl-devel libffi-devel readline-devel
 
 ここまでの準備ができていれば Ruby のインストール作業に移れます。まずは rbenv でインストールできる Ruby のバージョン一覧を確認してみます：
 # rbenv install -l
@@ -59,13 +59,13 @@ Available versions:
   topaz-dev
 
 JRuby とかもリストされてますが、今回は普通（？）の Ruby だけで考えます。バージョン番号に rc とか dev とか preview とか付いているのは開発中のものだったりします。この一覧を見る限り安定版では 2.2.0 が最新のようなので、これをインストールしてみましょう（結構時間かかります）：
-# rbenv install 2.2.0
-Downloading ruby-2.2.0.tar.gz...
+# rbenv install 2.2.3
+Downloading ruby-2.2.3.tar.gz...
     :
     :
 
 
 そして、この Ruby 2.2.0 をシステムで使うデフォルトバージョンとして設定した上で動作確認します：
-# rbenv global 2.2.0
+# rbenv global 2.2.3
 # ruby -v
 ruby 2.2.0p0 (2014-12-25 revision 49005) [x86_64-linux]

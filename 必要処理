@@ -1,0 +1,7 @@
+・redmine
+pg_hba.conf配置後に再起動処理を入れる。
+
+
+・jenkins
+firewall-cmd --add-port=8080/tcp --zone=public --permanent
+firewall-cmd --reload
