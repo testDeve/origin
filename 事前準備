@@ -1,0 +1,25 @@
+CentOS7への導入
+
+yum install git
+cd /opt
+git clone git://github.com/sstephenson/rbenv.git
+
+続けて ruby-build プラグインを rbenv の plugins フォルダにインストールします：
+mkdir /opt/rbenv/plugins
+cd /opt/rbenv/plugins
+git clone git://github.com/sstephenson/ruby-build.git
+
+最後に /etc/profile に以下の３行を追加して、rbenv を初期化＆実行するための環境設定を行います：
+export RBENV_ROOT="/opt/rbenv"
+export PATH="${RBENV_ROOT}/bin:${PATH}"
+eval "$(rbenv init -)"
+
+yum install gcc make openssl-devel libffi-devel readline-devel
+
+ここまでの準備ができていれば Ruby のインストール作業に移れます。まずは rbenv でインストールできる Ruby のバージョン一覧を確認してみます：
+rbenv install -l
+
+rbenv install 2.2.3
+
+rbenv global 2.2.3
+ruby -v
