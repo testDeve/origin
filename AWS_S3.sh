@@ -1,9 +1,10 @@
 #!/bin/bash
 
 AWS_BUCKET=www.mybacketsample.net
-KEY_FILE=jre-8u201-macosx-x64.dmg
+Body=jre-8u201-macosx-x64.dmg
+KEY_FILE="MYFolder/${Body}"
 
-split -b 5m ${KEY_FILE} splitFile
+split -b 100m ${Body} splitFile
 
 Tag_Upload_Id=`aws s3api create-multipart-upload --bucket ${AWS_BUCKET} --key ${KEY_FILE}|grep "UploadId"`
 Upload_Id=`echo ${Tag_Upload_Id} | cut -f 2 -d":" | xargs`
@@ -27,11 +28,9 @@ for File_Name in `ls -1 splitFile*`; do
    
    ETag_DQ_C=`aws s3api upload-part --bucket "${AWS_BUCKET}" --key "${KEY_FILE}" --part-number ${File_Part} --body "${File_Name}" --upload-id ${Upload_Id}  --content-md5 ${Send_File_MD5} |grep "ETag"`
    
-   echo "EDIT TARGET: ${ETag_DQ_C}"
    ETag_DQ=`echo ${ETag_DQ_C}|sed s/,//g`
    ETag_DQ=`echo "${ETag_DQ}"| cut -f 2 -d":"`
    ETag=`echo ${ETag_DQ} | sed "s/[\"][\\]//" | sed "s/[\\][\"]//"`
-   echo "EDIT AFTER :${ETag}"
    
    echo "    {" >>  fileparts.json
    echo "        \"ETag\": ${ETag}," >> fileparts.json
