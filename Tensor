@@ -1,0 +1,25 @@
+TensorFlowやったことまとめ
+1. テスト画像用意
+　　スクレイピングで画像の準備60枚くらい１カテゴリの画像数が30未満だとエラーになるかもしれない。
+
+2. retain.pyの実行
+   https://github.com/tensorflow/hub/raw/r0.1/examples/image_retraining/retrain.py
+   に公開されているretain.pyを実行する。
+   
+   途中でエラーになった。
+   import os
+   os.environ['KMP_DUPLICATE_LIB_OK']='True'
+   を追加した。
+   
+3. retain.pyを実行すると/tmp配下にファイルができる。
+   output_graph.pbとoutput_labels.txtが重要
+   output_graph.pdとoutput_labels.txtを引数として渡す。
+   
+   python label_image.py \
+--graph=C:/tmp/output_graph.pb --labels=C:/tmp/output_labels.txt \
+--input_layer=Placeholder \
+--output_layer=final_result \
+--image=~/flower_photos/daisy/21652746_cc379e0eea_m.jpg
+
+4. tensorboard --logdir /tmp/retrain_logsで学習データが見えた。
+   どう見るのかは勉強が必要か。
