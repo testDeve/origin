@@ -6,24 +6,35 @@ class Finance(dydb.DynamoDB):
         self.TableName='Finance'
         super().aws_DynamoDB()
 
-    def select(self,stock_code,date):
+    def select(self):
         result = self.dynamo_db.scan(TableName=self.TableName)
         return result
 
-    def query(self,stock_code,settlement):
-        print(stock_code,settlement)
-        result = self.dynamo_db.query(TableName=self.TableName,
-                                      Select='ALL_ATTRIBUTES',
-                                      KeyConditions={
-                                          "Stock_Code": {
-                                              "AttributeValueList": [{"S": stock_code}],
-                                              "ComparisonOperator": "EQ"
-                                          },
-                                          "Settlement": {
-                                              "AttributeValueList": [{"S": settlement}],
-                                              "ComparisonOperator": "EQ"
-                                          }
-                                      })
+    def query(self,stock_code,settlement=''):
+
+        if settlement != '':
+            result = self.dynamo_db.query(TableName=self.TableName,
+                                          Select='ALL_ATTRIBUTES',
+                                          KeyConditions={
+                                              "Stock_Code": {
+                                                  "AttributeValueList": [{"S": stock_code}],
+                                                  "ComparisonOperator": "EQ"
+                                              },
+                                              "Settlement": {
+                                                  "AttributeValueList": [{"N": settlement}],
+                                                  "ComparisonOperator": "EQ"
+                                              }
+                                          })
+        else:
+            result = self.dynamo_db.query(TableName=self.TableName,
+                                          Select='ALL_ATTRIBUTES',
+                                          KeyConditions={
+                                              "Stock_Code": {
+                                                  "AttributeValueList": [{"S": stock_code}],
+                                                  "ComparisonOperator": "EQ"
+                                              }
+                                          })
+
         return result
 
     def insert(self,stock_code,settlement,amo_salse,ope_profit,ord_profit,net_profit,share_profit,sto_distribution):
@@ -39,7 +50,7 @@ class Finance(dydb.DynamoDB):
             insert_item['Stock_Code'] = stock_code
 
         if settlement is not None:
-            settlement = {"S": settlement}
+            settlement = {"N": settlement}
             insert_item['Settlement'] = settlement
 
         if amo_salse is not None:
@@ -67,6 +78,22 @@ class Finance(dydb.DynamoDB):
         response = self.dynamo_db.put_item(
             TableName=self.TableName,
             Item=insert_item
+        )
+        return response
+
+    def update(self,stock_code,settlement,items):
+        response = self.dynamo_db.update_item(
+            TableName=self.TableName,
+            Key={
+                'Stock_Code': {'S':stock_code},
+                'Settlement': {'N':str(settlement)}
+            },
+            UpdateExpression="set Ope_Profit   = :ope_profit,   \
+                                  Share_Profit = :share_profit, \
+                                  Ord_Profit   = :ord_profit,   \
+                                  Amo_Salse    = :amo_salse,    \
+                                  Net_Profit   = :net_profit ",
+            ExpressionAttributeValues=items
         )
         return response
 
