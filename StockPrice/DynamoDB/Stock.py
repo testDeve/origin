@@ -6,24 +6,35 @@ class Stock(dydb.DynamoDB):
         self.TableName='Stock'
         super().aws_DynamoDB()
 
-    def select(self,stock_code,date):
+    def select(self):
         result = self.dynamo_db.scan(TableName=self.TableName)
         return result
 
-    def query(self,stock_code,date):
-        print(stock_code,date)
-        result = self.dynamo_db.query(TableName=self.TableName,
-                                      Select='ALL_ATTRIBUTES',
-                                      KeyConditions={
-                                          "Stock_Code": {
-                                              "AttributeValueList": [{"S": stock_code}],
-                                              "ComparisonOperator": "EQ"
-                                          },
-                                          "Cal_Day": {
-                                              "AttributeValueList": [{"S": date}],
-                                              "ComparisonOperator": "EQ"
-                                          }
-                                      })
+    def query(self,stock_code,date=0):
+
+        if date != 0:
+            result = self.dynamo_db.query(TableName=self.TableName,
+                                          Select='ALL_ATTRIBUTES',
+                                          KeyConditions={
+                                              "Stock_Code": {
+                                                  "AttributeValueList": [{"S": stock_code}],
+                                                  "ComparisonOperator": "EQ"
+                                              },
+                                              "Cal_Day": {
+                                                  "AttributeValueList": [{"N": date}],
+                                                  "ComparisonOperator": "EQ"
+                                              }
+                                          })
+        else:
+            result = self.dynamo_db.query(TableName=self.TableName,
+                                          Select='ALL_ATTRIBUTES',
+                                          KeyConditions={
+                                              "Stock_Code": {
+                                                  "AttributeValueList": [{"S": stock_code}],
+                                                  "ComparisonOperator": "EQ"
+                                              }
+                                          })
+
         return result
 
     def insert(self,stock_code,cal_day,ope_price,high_price,low_price,clo_price):
@@ -39,7 +50,7 @@ class Stock(dydb.DynamoDB):
             insert_item['Stock_Code'] = stock_code
 
         if cal_day is not None:
-            cal_day = {"S": cal_day}
+            cal_day = {"N": cal_day}
             insert_item['Cal_Day'] = cal_day
 
         if ope_price is not None:
