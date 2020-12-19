@@ -1,0 +1,3 @@
+①ローカル端末 ssh-keygen
+②相手先 .sshフォルダ作成(700)
+③相手先 authorized_keys作成（600）

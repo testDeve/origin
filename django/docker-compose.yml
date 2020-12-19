@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./nginx/uwsgi_params:/etc/nginx/uwsgi_params
+      - ./static:/static
+    depends_on:
+      - python
+  python:
+    build: ./python
+    command: uwsgi --socket :8001 --module app.wsgi --py-autoreload 1 --logto /tmp/uwsgi.log
+    volumes:
+    - ./src:/code
+    - ./static:/static
+    expose:
+    - "8001"
+    depends_on:
+    - db
+  db:
+    build:
+      context: .
+      dockerfile: ./postgresql/Dockerfile
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: django
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./pgsql:/var/lib/postgresql/data/pgdata
+      - ./sql:/docker-entrypoint-initdb.d
